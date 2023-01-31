@@ -1,0 +1,7 @@
+"python-doctr[tf]"
+numpy
+urllib3 
+validators
+opencv-python 
+flask
+flask-cors
