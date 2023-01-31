@@ -54,7 +54,7 @@ def ocr_api():
     image = reqDict["image"]
     img = base64.b64decode(image)
     img = Image.open(io.BytesIO(img))
-    words = ocr_image(img)
+    words = ocr_image(np.array(img))
     return jsonify({"result": words})
 
 
