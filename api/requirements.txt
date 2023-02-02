@@ -5,3 +5,4 @@ validators
 opencv-python 
 flask
 flask-cors
+regex

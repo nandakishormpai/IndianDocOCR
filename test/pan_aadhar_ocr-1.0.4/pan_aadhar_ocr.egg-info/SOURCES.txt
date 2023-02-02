@@ -1,0 +1,10 @@
+README.md
+setup.py
+pan_aadhar_ocr/Aadhar_Extractor.py
+pan_aadhar_ocr/Pan_Extractor.py
+pan_aadhar_ocr/__init__.py
+pan_aadhar_ocr.egg-info/PKG-INFO
+pan_aadhar_ocr.egg-info/SOURCES.txt
+pan_aadhar_ocr.egg-info/dependency_links.txt
+pan_aadhar_ocr.egg-info/requires.txt
+pan_aadhar_ocr.egg-info/top_level.txt

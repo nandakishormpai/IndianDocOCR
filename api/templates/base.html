@@ -21,7 +21,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <div class="conatiner">
-        <h1> Aadhar OCR Demo </h1>
+        <h1> Aadhar / PAN OCR Demo </h1>
         <div class="form-group">
             <form method="post" enctype="multipart/form-data">
                 <label for="exampleFormControlFile1">Upload Your Image</label>
@@ -34,21 +34,41 @@
                     <input type="url" name="imgurl" class="form-control" id="formGroupExampleInput"
                         placeholder="Enter Image url">
                 </div>
+                <br>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Document Type</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="docType">
+                        <option>Aadhar</option>
+                        <option>PAN</option>
+                    </select>
+                </div>
+
                 <input type="submit" value="Extract" class="btn btn-primary">
             </form>
         </div>
 
-        {% if words %}
+        {% if data %}
         <div class="img">
             <img src="{{ filepath }}" height="300">
 
         </div>
         <div class="words">
             <br>
-            <h2>Extracted texts</h2>
-            {% for word in words %}
-            <div>{{word}}</div>
-            {% endfor%}
+            <h2>Extracted Data</h2>
+            <br>
+            <table border="1">
+                {% for key in data %}
+                <tr>
+                    <th>
+                        {{ key }}
+                    </th>
+                    <td>
+                        {{ data[key] }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
         </div>
         {% endif %}
     </div>
@@ -56,6 +76,18 @@
         .conatiner {
             margin-left: 10%;
             margin-top: 100px;
+            margin-right: 10%;
+            margin-bottom: 100px;
+        }
+
+        table {
+            text-align: center;
+
+        }
+
+        td,
+        th {
+            padding: 10px;
         }
     </style>
 </body>
