@@ -1,11 +1,12 @@
 import os
 import numpy as np
 from doctr.models import ocr_predictor
-from doctr.io import DocumentFile
-from doctr.models import crop_orientation_predictor
 import cv2
 from datetime import datetime
 import regex as re
+from classification import docClassification
+
+
 format = "%d/%m/%Y"
 # import matplotlib.pyplot as plt
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -26,8 +27,6 @@ godpatn = r'([A-Z]+)\s([A-Z]+)\s([A-Z]+)$|([A-Z]+)\s([A-Z]+)$'
 
 
 # https://becominghuman.ai/how-to-automatically-deskew-straighten-a-text-image-using-opencv-a0c30aed83df
-
-
 def getSkewAngle(cvImage) -> float:
     # Prep image, copy, convert to gray scale, blur, and threshold
     newImage = cvImage.copy()
@@ -140,7 +139,7 @@ def find_name(ocr_text):
     Returns:
     str: name on the aadhar card
     """
-    adhar_name_patn = r'\b[A-Z][a-z]+\s[A-Z][a-z]+(\s[A-Z][a-z]+)?\s+'
+    adhar_name_patn = r'[A-Z][a-z]+\s[A-Z][a-z]+(\s[A-Z][a-z]+)?'
     match = re.search(adhar_name_patn, ocr_text)
     if match:
         return (match.group()).rstrip()
@@ -190,43 +189,7 @@ def find_gender(ocr_text):
     return GENDER
 
 
-def ocr_image_aadhar(img, flag=0):
-    data = {}
-    rotFlag = 1
-    textExtracted = ""
-    rotated_img = deskew(img)
-    result = predictor([rotated_img])
-    json_result = result.export()
-    for count, block in enumerate(json_result["pages"][0]["blocks"]):
-        for lineCount, line in enumerate(block["lines"]):
-            for wordCount, word in enumerate(line["words"]):
-                # if (isDate(word["value"])):
-                #     data["dob"] = word["value"]
-                if (word["confidence"] > 0.3 and len(word["value"]) > 1):
-                    # if (word["confidence"] > 0.5 and word["value"].isalnum() == True):
-                    textExtracted += (word["value"] + " ")
-
-    if (flag == 0):
-        words = textExtracted.split(" ")
-        for word in words:
-            if (word.isdigit() == True and len(word) == 4):
-                # Check if the image is 180 degrees rotated
-                if (words.index(word) <= len(words)/2 and rotFlag):
-                    rotFlag = 0
-                    correctImg = rotate_image_stack(rotated_img, 180)
-                    print("Rotating")
-                    return ocr_image_aadhar(correctImg, 1)
-
-    print(textExtracted)
-    data['dob'] = find_dob(textExtracted)
-    data['name'] = find_name(textExtracted)
-    data['gender'] = find_gender(textExtracted)
-    data['aadharNumber'] = find_adhar_number(textExtracted)
-    print(data)
-    return [data, rotated_img]
-
-
-def ocr_image_pan(img, flag=0):
+def ocr_image(img, flag=0):
     data = {}
     rotFlag = 1
     textExtracted = ""
@@ -241,7 +204,14 @@ def ocr_image_pan(img, flag=0):
                     textExtracted += (word["value"] + " ")
             textExtracted = textExtracted.rstrip()
             textExtracted += '\n'
+    if (docClassification(textExtracted)):
+        data = aadhar_extract(textExtracted)
+    else:
+        data = pan_extract(textExtracted)
+    return [data, rotated_img]
 
+
+def aadhar_extract(textExtracted, flag=0):
     # if (flag == 0):
     #     words = textExtracted.split(" ")
     #     for word in words:
@@ -252,14 +222,21 @@ def ocr_image_pan(img, flag=0):
     #                 correctImg = rotate_image_stack(rotated_img, 180)
     #                 print("Rotating")
     #                 return ocr_image(correctImg, 1)
+    data = {}
+    data['docType'] = 'Aadhar'
+    data['dob'] = find_dob(textExtracted)
+    data['name'] = find_name(textExtracted)
+    data['gender'] = find_gender(textExtracted)
+    data['aadharNumber'] = find_adhar_number(textExtracted)
+    return data
 
-    # print(textExtracted)
+
+def pan_extract(textExtracted, flag=0):
     PAN = 'NAN'
     Name = 'NAN'
     FatherName = 'NAN'
     DOB = 'NAN'
     # print(OCR_text)
-    print(textExtracted)
     textExtracted = textExtracted.split('\n')
     gov = [i for i, txt in enumerate(textExtracted) if 'GOVT' in txt][0]
     OCR_text = textExtracted[gov + 1:]
@@ -269,8 +246,6 @@ def ocr_image_pan(img, flag=0):
         # print(name.group())
         if name:
             temp.append(name.group())
-
-    print(temp)
 
     # # Handle 'O's in Digits
     # temp = ''
@@ -297,14 +272,15 @@ def ocr_image_pan(img, flag=0):
             break
 
     data = {
+        'docType': 'PAN',
         'Pan_number': PAN,
         'Name': Name,
         'Father_Name': FatherName,
         'DOB': DOB
     }
-    return [data, rotated_img]
+    return data
 
 
 if __name__ == "__main__":
-    img = cv2.imread("./test_imgs/pan1.jpeg")
-    print(ocr_image_pan(img))
+    img = cv2.imread("./test_imgs/test_2.jpg")
+    print(ocr_image(img))

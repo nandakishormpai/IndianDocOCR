@@ -1,8 +1,8 @@
-"python-doctr[tf]"
-numpy
-urllib3 
+tensorflow
+transformers[tf]
+sentence-transformers
 validators
 opencv-python 
 flask
 flask-cors
-regex
+python-doctr[tf]

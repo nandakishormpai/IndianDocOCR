@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, flash, session, url_for
 import base64
 from flask_cors import CORS
-from ocr import ocr_image_aadhar, ocr_image_pan
+from ocr import ocr_image
 import numpy as np
 import validators
 import urllib
@@ -11,6 +11,7 @@ import io
 from PIL import Image
 from werkzeug.utils import secure_filename
 from datetime import date
+
 
 app = Flask(__name__)
 app.secret_key = "JUSTFORDEMO"
@@ -48,17 +49,16 @@ def ocr_web_app():
             flash('No Input', category='error')
             return render_template("base.html")
 
-        docType = request.form.get('docType')
-        if (docType == "PAN"):
-            [data, rotated_img] = ocr_image_pan(img)
-        else:
-            [data, rotated_img] = ocr_image_aadhar(img)
-
+        # docType = request.form.get('docType')
+        # if (docType == "PAN"):
+        #     [data, rotated_img] = ocr_image_pan(img)
+        # else:
+        #     [data, rotated_img] = ocr_image_aadhar(img)
+        [data, rotated_img] = ocr_image(img)
         try:
             fileName = secure_filename(file.filename)
             cv2.imwrite(os.path.join(
                 app.config['UPLOAD_FOLDER'], fileName), rotated_img)
-
         except:
             fileName = "url_img_" + str(date.today()) + ".jpg"
             cv2.imwrite(os.path.join(
