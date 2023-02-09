@@ -26,7 +26,13 @@ fnamepatn = r'([A-Z]+)\s+?'
 godpatn = r'([A-Z]+)\s([A-Z]+)\s([A-Z]+)$|([A-Z]+)\s([A-Z]+)$'
 
 
+def grayscale(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+
 # https://becominghuman.ai/how-to-automatically-deskew-straighten-a-text-image-using-opencv-a0c30aed83df
+
+
 def getSkewAngle(cvImage) -> float:
     # Prep image, copy, convert to gray scale, blur, and threshold
     newImage = cvImage.copy()
@@ -95,6 +101,7 @@ def rotate_image_stack(mat, angle):
 
 def deskew(cvImage):
     angle = getSkewAngle(cvImage)
+    print("\nAngle: ", angle, "\n")
     height, width = cvImage.shape[:2]
     # print("angle: ",angle)
     if (angle != -90 or (angle == -90 and height > width)):
@@ -189,24 +196,42 @@ def find_gender(ocr_text):
     return GENDER
 
 
-def ocr_image(img, flag=0):
-    data = {}
-    rotFlag = 1
+def postProcess(json_result):
     textExtracted = ""
-    rotated_img = deskew(img)
-    result = predictor([rotated_img])
-    json_result = result.export()
     for count, block in enumerate(json_result["pages"][0]["blocks"]):
         for lineCount, line in enumerate(block["lines"]):
             for wordCount, word in enumerate(line["words"]):
-                if (word["confidence"] > 0.3):
-                    # if (word["confidence"] > 0.5 and word["value"].isalnum() == True):
-                    textExtracted += (word["value"] + " ")
+                # if (word["confidence"] > 0.3):
+                # if (word["confidence"] > 0.5 and word["value"].isalnum() == True):
+                textExtracted += (word["value"] + " ")
             textExtracted = textExtracted.rstrip()
             textExtracted += '\n'
-    if (docClassification(textExtracted)):
+    return textExtracted
+
+
+def ocr_image(img, flag=0):
+    data = {}
+    rotFlag = 1
+
+    rotated_img = deskew(img)
+    result = predictor([rotated_img])
+    json_result = result.export()
+    textExtracted = postProcess(json_result)
+    print(textExtracted)
+    docType = docClassification(textExtracted)
+    print("Doc Type ", docType, "\n\n")
+    if docType <= 1:
+        # rotated_img = rotate_image_stack(rotated_img, 180)
+        # result = predictor([rotated_img])
+        # json_result = result.export()
+        # textExtracted = postProcess(json_result)
         data = aadhar_extract(textExtracted)
     else:
+        # if docType == 3:
+        #     rotated_img = rotate_image_stack(rotated_img, 180)
+        #     result = predictor([rotated_img])
+        #     json_result = result.export()
+        #     textExtracted = postProcess(json_result)
         data = pan_extract(textExtracted)
     return [data, rotated_img]
 
@@ -281,6 +306,19 @@ def pan_extract(textExtracted, flag=0):
     return data
 
 
+def ocr_ner(img):
+    # rotated_img = deskew(img)
+    rotated_img = img
+    result = predictor([rotated_img])
+    json_result = result.export()
+    textExtracted = postProcess(json_result)
+    file = open("extractedOCR.txt", "w")
+    a = file.write(textExtracted)
+    file.close()
+    return textExtracted
+
+
 if __name__ == "__main__":
-    img = cv2.imread("./test_imgs/test_2.jpg")
-    print(ocr_image(img))
+    img = cv2.imread("./test_imgs/pan_6.png")
+    img = grayscale(img)
+    print(ocr_ner(img))

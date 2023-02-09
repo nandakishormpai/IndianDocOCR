@@ -10,28 +10,29 @@ model_id = 'sentence-transformers/all-MiniLM-L6-v2'
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = TFSentenceTransformer(model_id)
 
-sentences = ['\nGOVERNMENT OF INDIA\nJohn Doe\nJAH fafr/ DOB: 12/12/1958\n MALE\n6056 6565 9631\n31 ETTT-ART EH -\n',
-             '\nINCOMETAX DEPARTMENT\nGOVT.OF INDIA\nJane Doe\nJoe Braham John\n14/07/1966\n-\nPermanentAccount Number\nADHPB70610\nSignature\n']
 
+sentences = ['\nGOVERNMENT OF INDIA\nJohn Doe\nJAH fafr/ DOB: 11/11/1998\n MALE\n6126 6234 9531\n31 ETTT-ART EH -\n',
+             '\nLERIE\n2186 4544 2121\nFemale\n15/11/1995 DOB: He\nJane Doe\na\nGovernment\n',
+             '\nINCOMETAX DEPARTMENT\nGOVT.OF INDIA\nJane Doe\nJoe Braham John\n04/10/1976\n-\nPermanentAccount Number\nADGHT70610\nSignature\n',
+             'Signature\n2\nANPRM2537J\nE\n-\nermanent\nJohn Doe\nJoe Braham John\nGOVT.\nDEPARTMENT INCOMETAX\n']
 
 
 # Compute embedding for both lists
 # run inference with TFSentenceTransformer
-encoded_input_0 = tokenizer(sentences[0], return_tensors="tf")
-embedding_0 =  model(encoded_input_0)
-encoded_input_1 = tokenizer(sentences[1], return_tensors="tf")
-embedding_1 =  model(encoded_input_1)
+embeddings = []
+for sentence in sentences:
+    encoded_input = tokenizer(
+        (sentence.replace("\n", " ")).strip(), return_tensors="tf")
+    embeddings.append(model(encoded_input))
 
 
 def docClassification(text):
-    encoded_input = tokenizer(text, return_tensors="tf")
-    inpEmbedding =  model(encoded_input)
-    embeddings = [embedding_0,embedding_1]
+    encoded_input = tokenizer(
+        (text.replace("\n", " ")).strip(), return_tensors="tf")
+    inpEmbedding = model(encoded_input)
     sim = []
-    for count, sentence in enumerate(sentences):
+    for count, embedding in enumerate(embeddings):
         sim.append(tf.keras.losses.cosine_similarity(
-            inpEmbedding, embeddings[count]))
-    if (sim.index(min(sim)) == 0):
-        return 1
-    else:
-        return 0
+            inpEmbedding, embedding))
+    print(sim)
+    return sim.index(min(sim))
