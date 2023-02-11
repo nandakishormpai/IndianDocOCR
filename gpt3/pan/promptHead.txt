@@ -1,0 +1,100 @@
+Extract the Name, Father's Name, Date of Birth, and PAN Card Number from the following text which is an OCR text. Do consider certain errors specific to OCR and try to correct it while detecting and extracting entities.
+text: rprle. fAHTST
+PEt aeprtt
+GOVT OF INDIA
+INCOME TAXDEPARTMENT
+zurh tran ERT ChTS
+Permanent Account Number Card
+LIFKB5060Q
+E Name
+XHF DQK
+fom 2T mie /Father's Name
+POFMB KZZJ TERTRM
+a
+ajea/mipie of Birth
+A oukomth
+reeR/Signature
+5012018
+27/05/1977
+
+
+Name: XHF DQK
+Father's Name: POFMB KZZJ TERTRM
+DOB: 27/05/1977
+PAN Card Number: LIFKB5060Q
+
+###
+
+text: zprue fAHTst
+Pelh elgpett
+INCOME INIRDMV3OXVI
+GOVT OF INDIA
+zurh unh u ae
+Permanent Account Number Card
+WZBAL6530G
+-
+RJGQ JQS
+fen - à -
+-
+SHDSAQ CBL
+-
+Date of -
+-
+rean
+-
+07/04/1972
+
+
+
+Name: RJGQ JQS
+Father's Name: SHDSAQ CBL
+DOB: 07/04/1972
+PAN Card Number: WZBAL6530G
+
+###
+
+text: xdprlle. fAHIST
+ph ACpH
+INCOME TAX DEPARTMENT
+GOVT. OF INDIA
+- :
+ZLQ BTSIG BVAWTO
+ZJA VXI
+13/04/1984
+Permanent Account Number
+EJAPS0276M
+JHgy* Yui#**
+OGUHM6835Y
+Signature
+
+
+Name: ZLQ BTSIG BVAWTO
+Father's Name: ZJA VXI
+DOB: 13/04/1984
+PAN Card Number: OGUHM6835Y
+
+###
+
+text: >prile fAHTT
+Ph XH
+INCOME" INGINDAVGSOXVI
+GOVT OF INDIA
+VGG BIBR
+EGP WNLPA KVE
+06/12/1977
+Permanent Account Number
+TUUFK6157A -
+-
+:
+JHgy* Yui#**
+Signature
+
+
+
+Name: VGG BIBR
+Father's Name: EGP WNLPA KVE
+DOB: 06/12/1977
+PAN Card Number: TUUFK6157A
+
+###
+

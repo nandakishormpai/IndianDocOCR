@@ -1,0 +1,12 @@
+HRE TRCR
+Government of India
+3ITEITR
+insert_name
+DOB  insert_dob
+23/10/2012
+insert_gender
+,
+Date
+Issue
+insert_aadhar_number
+AT lE H 9640T

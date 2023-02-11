@@ -1,0 +1,84 @@
+Extract the Name, Aadhar Number, Gender, Date of Birth or Year of birth from the following text which is an OCR text. Do consider certain errors specific to OCR and try to correct it while detecting and extracting entities.
+text: HRE TRCR
+Government of India
+3ITEITR
+Imnz Empppy
+DOB  24-04-1981
+23/10/2012
+TRANSGENDER
+,
+Date
+Issue
+4285 8833 0927
+AT lE H 9640T
+
+
+Name: Imnz Empppy
+DOB: 24-04-1981
+Gender: TRANSGENDER
+Aadhar Number: 4285 8833 0927
+
+###
+
+text: Si89 HAAIA
+Government of India
+Lelslle loGlhe
+Hewaq Naip
+fTOT  Blfen SITT fSTOPT
+Father: TYUIU OKIOO
+iolo /llk Year of Birth: 1990
+lgile MALE
+2593 7887 2996
+OEIK BKolle SBIG
+QSIS
+
+
+Name: Hewaq Naip
+Year of Birth: 1990
+Gender: MALE
+Aadhar Number: 2593 7887 2996
+
+###
+
+text: ERG saE
+- 6 -
+-
+aieis 2ihese
+-
+Yxgp Pqhzd Gmfub
+HGT a - HeH gar
+Mother Cgtr Ytu
+3R fata/DOB: 20/07/1984
+goul/ Female
+6614 2307 9727
+DE leihgh
+ART hlE
+
+
+Name: Yxgp Pqhzd Gmfub
+DOB: 20/07/1984
+Gender: Female
+Aadhar Number: 6614 2307 9727
+
+###
+
+text: ERG saE
+- 6 -
+-
+aieis 2ihese
+-
+Zknutx Rnmcxy
+HGT a - HeH gar
+Mother Cgtr Ytu
+3R fata/DOB: 29-12-1985
+gou/ Male
+3842 3502 0242
+DE leihgh
+ART hlE
+
+Name: Zknutx Rnmcxy
+DOB: 29-12-1985
+Gender: Male
+Aadhar Number: 3842 3502 0242
+
+###

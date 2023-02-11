@@ -1,0 +1,10 @@
+pts TR
+GOVERNMENT
+INDIA
+lh EHT
+insert_name
+3AH fafl DOB: insert_dob
+heb insert_gender
+insert_aadhar_number
+BITETTT-ART le H
+Eleeh

@@ -1,0 +1,12 @@
+HRa HRCR
+Government of India
+3ITETR
+insert_name
+DOB  insert_dob
+23/10/2012
+insert_gender
+:
+Date
+Issue
+insert_aadhar_number
+ART 3TTEIR,  9640T
